@@ -28,18 +28,32 @@ nmap <leader>0 :ZoomReset<CR>
 
 " guifont size + 1
 function! s:ZoomIn()
-  let l:fsize = substitute(&guifont, '^.*:h\([^:]*\).*$', '\1', '')
-  let l:fsize += 1
-  let l:guifont = substitute(&guifont, ':h\([^:]*\)', ':h' . l:fsize, '')
-  let &guifont = l:guifont
+  if has("gui_gtk2") || has("gui_gtk3")
+    let l:fsize = substitute(&guifont, '^\w* \(\d*\)$', '\1', '')
+    let l:fsize += 1
+    let l:guifont = substitute(&guifont, ' \(\d*\)$', ' ' . l:fsize, '')
+    let &guifont = l:guifont
+  elseif has("gui_win32")
+    let l:fsize = substitute(&guifont, '^.*:h\([^:]*\).*$', '\1', '')
+    let l:fsize += 1
+    let l:guifont = substitute(&guifont, ':h\([^:]*\)', ':h' . l:fsize, '')
+    let &guifont = l:guifont
+  endif
 endfunction
 
 " guifont size - 1
 function! s:ZoomOut()
-  let l:fsize = substitute(&guifont, '^.*:h\([^:]*\).*$', '\1', '')
-  let l:fsize -= 1
-  let l:guifont = substitute(&guifont, ':h\([^:]*\)', ':h' . l:fsize, '')
-  let &guifont = l:guifont
+  if has("gui_gtk2") || has("gui_gtk3")
+    let l:fsize = substitute(&guifont, '^\w* \(\d*\)$', '\1', '')
+    let l:fsize -= 1
+    let l:guifont = substitute(&guifont, ' \(\d*\)$', ' ' . l:fsize, '')
+    let &guifont = l:guifont
+  elseif has("gui_win32")
+    let l:fsize = substitute(&guifont, '^.*:h\([^:]*\).*$', '\1', '')
+    let l:fsize -= 1
+    let l:guifont = substitute(&guifont, ':h\([^:]*\)', ':h' . l:fsize, '')
+    let &guifont = l:guifont
+  endif
 endfunction
 
 " reset guifont size
